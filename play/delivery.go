@@ -3,6 +3,7 @@ package play
 import (
    "154.pages.dev/protobuf"
    "errors"
+   "fmt"
    "io"
    "net/http"
    "net/url"
@@ -89,10 +90,16 @@ func (d *Delivery) Delivery(single bool) error {
       return errors.New("status code")
    }
    switch status_code {
+   case 1:
+      // OK
+   case 2:
+      return errors.New("generic error")
    case 3:
-      return errors.New("acquire")
+      return errors.New("purchase required")
    case 5:
-      return errors.New("version code")
+      return errors.New("invalid version code")
+   default:
+      return fmt.Errorf("unknown error %d", status_code)
    }
    d.m.Message(2)
    return nil
