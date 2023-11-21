@@ -20,6 +20,11 @@ func (s Config_APK) Config() (string, bool) {
 }
 
 // developer.android.com/guide/app-bundle
+func (s Config_APK) Signature() (string, bool) {
+   return s.m.String(4)
+}
+
+// developer.android.com/guide/app-bundle
 func (s Config_APK) URL() (string, bool) {
    return s.m.String(5)
 }
@@ -106,6 +111,10 @@ func (d Delivery) OBB_Files() []OBB_File {
    return files
 }
 
+func (d Delivery) Signature() (string, bool) {
+   return d.m.String(2)
+}
+
 func (d Delivery) URL() (string, bool) {
    return d.m.String(3)
 }
@@ -126,4 +135,8 @@ func (o OBB_File) Version_Code() (uint64, bool) {
 
 func (o OBB_File) URL() (string, bool) {
    return o.m.String(4)
+}
+
+func (o OBB_File) Signature() (string, bool) {
+   return o.m.String(8)
 }

@@ -6,6 +6,10 @@ import (
    "net/http"
    "os"
    "time"
+   "io"
+   "reflect"
+   "encoding/base64"
+   "crypto/sha1"
    option "154.pages.dev/http"
 )
 
@@ -31,7 +35,42 @@ func (f flags) do_device() error {
    return check.Sync(play.Phone)
 }
 
-func (f flags) download(url, name string) error {
+func (f flags) check_file_sha1(name string, control_hash []byte) (bool, error) {
+   _, err := os.Stat(name)
+   if err != nil {
+      return false, nil
+   }
+   file, err := os.Open(name)
+   if err != nil {
+      return false, err
+   }
+   defer file.Close()
+   fmt.Printf("File %s exists, verifying...\n", name)
+   hash := sha1.New()
+   if _, err := io.Copy(hash, file); err != nil {
+      return false, err
+   }
+   if !reflect.DeepEqual(hash.Sum(nil), control_hash) {
+      fmt.Printf("  SHA-1 mismatch, redownloading...\n")
+      return false, nil
+   }
+   fmt.Printf("  SHA-1 OK\n")
+   return true, nil
+}
+
+func (f flags) download(url, name string, sig string) error {
+   h, err := base64.RawURLEncoding.DecodeString(sig)
+   if err != nil {
+      return err
+   }
+   //fmt.Printf("SHA-1: %x\n", h)
+   matches, err := f.check_file_sha1(name, h)
+   if err != nil {
+      return err
+   }
+   if matches {
+      return nil
+   }
    res, err := http.Get(url)
    if err != nil {
       return err
@@ -108,9 +147,11 @@ func (f flags) do_delivery() error {
    for _, apk := range client.Config_APKs() {
       if url, ok := apk.URL(); ok {
          if config, ok := apk.Config(); ok {
-            err := f.download(url, f.app.APK(config))
-            if err != nil {
-               return err
+            if sig, ok := apk.Signature(); ok {
+               err := f.download(url, f.app.APK(config), sig)
+               if err != nil {
+                  return err
+               }
             }
          }
       }
@@ -119,18 +160,22 @@ func (f flags) do_delivery() error {
       if url, ok := obb.URL(); ok {
          if role, ok := obb.Role(); ok {
             if vc, ok := obb.Version_Code(); ok {
-               err := f.download(url, f.app.OBB(role, vc))
-               if err != nil {
-                  return err
-               }
+               if sig, ok := obb.Signature(); ok {
+                  err := f.download(url, f.app.OBB(role, vc), sig)
+                  if err != nil {
+                     return err
+                  }
+               } 
             }
          }
       }
    }
    if url, ok := client.URL(); ok {
-      err := f.download(url, f.app.APK(""))
-      if err != nil {
-         return err
+      if sig, ok := client.Signature(); ok {
+         err := f.download(url, f.app.APK(""), sig)
+         if err != nil {
+            return err
+         }
       }
    }
    return nil
