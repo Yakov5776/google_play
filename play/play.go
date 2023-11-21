@@ -192,6 +192,12 @@ var Platforms = map[int]string{
    1: "armeabi-v7a",
    // com.kakaogames.twodin
    2: "arm64-v8a",
+   // TODO: No known apps that require this
+   3: "armeabi",
+   // com.scottgames.fivenightsatfreddys
+   4: "x86_64",
+   // com.google.android.gms
+   5: "mips",
 }
 
 func (p Platform) String() string {
