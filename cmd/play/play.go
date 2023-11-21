@@ -118,9 +118,11 @@ func (f flags) do_delivery() error {
    for _, obb := range client.OBB_Files() {
       if url, ok := obb.URL(); ok {
          if role, ok := obb.Role(); ok {
-            err := f.download(url, f.app.OBB(role))
-            if err != nil {
-               return err
+            if vc, ok := obb.Version_Code(); ok {
+               err := f.download(url, f.app.OBB(role, vc))
+               if err != nil {
+                  return err
+               }
             }
          }
       }

@@ -179,7 +179,7 @@ func (a Application) APK(config string) string {
    return string(b)
 }
 
-func (a Application) OBB(role uint64) string {
+func (a Application) OBB(role uint64, version_code uint64) string {
    var b []byte
    if role >= 1 {
       b = append(b, "patch"...)
@@ -187,7 +187,7 @@ func (a Application) OBB(role uint64) string {
       b = append(b, "main"...)
    }
    b = append(b, '.')
-   b = strconv.AppendUint(b, a.Version, 10)
+   b = strconv.AppendUint(b, version_code, 10)
    b = append(b, '.')
    b = append(b, a.ID...)
    b = append(b, ".obb"...)

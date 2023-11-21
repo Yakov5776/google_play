@@ -120,6 +120,10 @@ func (o OBB_File) Role() (uint64, bool) {
    return o.m.Varint(1)
 }
 
+func (o OBB_File) Version_Code() (uint64, bool) {
+   return o.m.Varint(2)
+}
+
 func (o OBB_File) URL() (string, bool) {
    return o.m.String(4)
 }
