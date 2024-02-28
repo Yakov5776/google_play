@@ -41,6 +41,9 @@ type Access_Token struct {
 }
 
 func (a *Access_Token) Refresh(r Refresh_Token) error {
+   if r.Values.Get("Token") == "" {
+      return nil
+   }
    res, err := http.PostForm(
       "https://android.googleapis.com/auth", url.Values{
          "Token":      {r.Values.Get("Token")},
