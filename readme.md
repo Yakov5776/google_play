@@ -1,27 +1,6 @@
 # Google Play
 
-> I’m not really sure what the point of this video is, but I guess just be
-> generous. be kind to people, because you never know how much they might need
-> it, or how far it’ll go.
->
-> [NakeyJakey (2018)](//youtube.com/watch?v=Cr0UYNKmrUs)
-
 download APK from Google Play or send API requests
-
-## support
-
-because of repeated abuse, I no longer offer free discussion of this software. so
-unless you have paid up front, do not:
-
-1. post an issue
-2. post a pull request
-3. message me on discord
-4. email me
-
-software is not licensed for commercial use. if you wish to purchase a
-commercial license, contact me.
-
-<https://paypal.com/donate?hosted_button_id=UEJBQQTU3VYDY>
 
 ## tool examples
 
@@ -71,36 +50,3 @@ downloaded:
 ~~~
 play -a com.google.android.youtube -v 1540222400
 ~~~
-
-## goals
-
-1. [Pixel 6](//wikipedia.org/wiki/Pixel_6) (2021)
-2. [Android 11](//wikipedia.org/wiki/Android_11) (2020)
-3. [Google Play](//wikipedia.org/wiki/Google_Play) 29 (2022)
-
-non goals:
-
-email/password login. up to Android 4.4 (2013), the login is protected with TLS
-fingerprinting, which is difficult but possible to bypass. since Android 5
-(2014), Google uses bot-guard via JavaScript to protect the login. I do not
-know how to reverse that, and I did not find any implementations online.
-
-## contact
-
-<dl>
-   <dt>
-   email
-   </dt>
-   <dd>
-   srpen6@gmail.com
-   </dd>
-   <dt>
-   Discord
-   </dt>
-   <dd>
-   srpen6
-   </dd>
-   <dd>
-   https://discord.com/invite/WWq6rFb8Rf
-   </dd>
-</dl>
