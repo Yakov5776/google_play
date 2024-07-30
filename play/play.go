@@ -67,6 +67,8 @@ var Phone = Device{
       "android.hardware.touchscreen.multitouch",
       // com.mediocre.smashhit
       "android.hardware.touchscreen.multitouch.distinct",
+      // com.sega.sonicjumpfever
+      "android.hardware.touchscreen.multitouch.jazzhand",
       // com.sygic.aura
       "android.hardware.location.network",
       // com.xiaomi.smarthome
