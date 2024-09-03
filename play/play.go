@@ -199,18 +199,19 @@ func (a Application) OBB(role uint64, version_code uint64) string {
 type Platform int
 
 var Platforms = map[int]string{
-   // com.google.android.youtube
-   0: "x86",
-   // com.miui.weather2
+   0: "armeabi",
    1: "armeabi-v7a",
-   // com.kakaogames.twodin
    2: "arm64-v8a",
-   // TODO: No known apps that require this
-   3: "armeabi",
-   // com.scottgames.fivenightsatfreddys
-   4: "x86_64",
-   // com.google.android.gms
-   5: "mips",
+   3: "arm64-v8a_4k",
+   4: "x86",
+   5: "x86_64",
+   6: "armeabi-v7a_tablet",
+   7: "armeabi-v7a_tablet_large",
+   8: "arm64-v8a_tablet",
+   9: "arm64-v8a_tablet_large",
+   10: "mips",
+   11: "mips64",
+   12: "riscv64",
 }
 
 func (p Platform) String() string {
@@ -226,6 +227,113 @@ func (p *Platform) Set(s string) error {
    return nil
 }
 
+var Presets = map[int]Preset{
+   // armeabi
+   0: {
+      ABIs: []string{"armeabi"},
+      Width: 320,
+      Height: 480,
+      Density: 160,
+      ScreenSize: 1,
+   },
+   // armeabi-v7a
+   1: {
+      ABIs: []string{"armeabi-v7a","armeabi"},
+      Width: 720,
+      Height: 1280,
+      Density: 320,
+      ScreenSize: 2,
+   },
+   // arm64-v8a
+   2: {
+      ABIs: []string{"arm64-v8a","armeabi-v7a","armeabi"},
+      Width: 1080,
+      Height: 1920,
+      Density: 480,
+      ScreenSize: 2,
+   },
+   // arm64-v8a_4k
+   3: {
+      ABIs: []string{"arm64-v8a","armeabi-v7a","armeabi"},
+      Width: 2160,
+      Height: 3840,
+      Density: 640,
+      ScreenSize: 2,
+   },
+   // x86
+   4: {
+      ABIs: []string{"x86"},
+      Width: 720,
+      Height: 1280,
+      Density: 320,
+      ScreenSize: 2,
+   },
+   // x86_64
+   5: {
+      ABIs: []string{"x86_64","x86"},
+      Width: 1080,
+      Height: 1920,
+      Density: 480,
+      ScreenSize: 2,
+   },
+   // armeabi-v7a_tablet
+   6: {
+      ABIs: []string{"armeabi-v7a","armeabi"},
+      Width: 600,
+      Height: 1024,
+      Density: 160,
+      ScreenSize: 3,
+   },
+   // armeabi-v7a_tablet_large
+   7: {
+      ABIs: []string{"armeabi-v7a","armeabi"},
+      Width: 800,
+      Height: 1280,
+      Density: 160,
+      ScreenSize: 4,
+   },
+   // arm64-v8a_tablet
+   8: {
+      ABIs: []string{"arm64-v8a","armeabi-v7a","armeabi"},
+      Width: 1600,
+      Height: 2560,
+      Density: 320,
+      ScreenSize: 4,
+   },
+   // arm64-v8a_tablet_large
+   9: {
+      ABIs: []string{"arm64-v8a","armeabi-v7a","armeabi"},
+      Width: 1848,
+      Height: 2960,
+      Density: 240,
+      ScreenSize: 4,
+   },
+   // mips
+   10: {
+      ABIs: []string{"mips"},
+      Width: 720,
+      Height: 1280,
+      Density: 320,
+      ScreenSize: 2,
+   },
+   // mips64
+   11: {
+      ABIs: []string{"mips64","mips"},
+      Width: 720,
+      Height: 1280,
+      Density: 320,
+      ScreenSize: 2,
+   },
+   // riscv64
+   12: {
+      ABIs: []string{"riscv64"},
+      Width: 720,
+      Height: 1280,
+      Density: 320,
+      ScreenSize: 2,
+   },
+}
+
 type Device struct {
    // developer.android.com/guide/topics/manifest/supports-gl-texture-element
    Texture []string
@@ -234,5 +342,26 @@ type Device struct {
    // developer.android.com/guide/topics/manifest/uses-feature-element
    Feature []string
    // developer.android.com/ndk/guides/abis
-   Platform string
+   ABIs []string
+   Width uint64
+   Height uint64
+   Density uint64
+   ScreenSize uint64
+}
+
+func (d *Device) Set(p Platform) {
+   preset := Presets[int(p)]
+   d.ABIs = preset.ABIs
+   d.Width = preset.Width
+   d.Height = preset.Height
+   d.Density = preset.Density
+   d.ScreenSize = preset.ScreenSize
+}
+
+type Preset struct {
+   ABIs []string
+   Width uint64
+   Height uint64
+   Density uint64
+   ScreenSize uint64
 }

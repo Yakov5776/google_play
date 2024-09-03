@@ -26,7 +26,9 @@ func (c Checkin) Sync(d Device) error {
    })
    m.Add(1, func(m *protobuf.Message) {
       m.Add(15, func(m *protobuf.Message) {
-         m.Add_String(4, d.Platform)
+         for _, abi := range d.ABIs {
+            m.Add_String(4, abi)
+         }
       })
    })
    m.Add(1, func(m *protobuf.Message) {

@@ -20,15 +20,19 @@ func (c *Checkin) Checkin(d Device) error {
       m.Add_Varint(1, 3)
       m.Add_Varint(2, 2)
       m.Add_Varint(3, 2)
-      m.Add_Varint(4, 2)
+      m.Add_Varint(4, d.ScreenSize)
       m.Add_Varint(5, 1)
       m.Add_Varint(6, 1)
-      m.Add_Varint(7, 420)
+      m.Add_Varint(7, d.Density)
       m.Add_Varint(8, gl_es_version)
       for _, library := range d.Library {
          m.Add_String(9, library)
       }
-      m.Add_String(11, d.Platform)
+      for _, abi := range d.ABIs {
+         m.Add_String(11, abi)
+      }
+      m.Add_Varint(12, d.Width)
+      m.Add_Varint(13, d.Height)
       for _, texture := range d.Texture {
          m.Add_String(15, texture)
       }
