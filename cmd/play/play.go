@@ -14,11 +14,13 @@ import (
 )
 
 func (f flags) do_device() error {
-   name, err := os.UserHomeDir()
+   home, err := os.UserHomeDir()
    if err != nil {
       return err
    }
-   name += fmt.Sprintf("/google/play/%v.bin", f.platform)
+   home += "/google/play/"
+   err = os.MkdirAll(home, os.ModePerm)
+   name := home + fmt.Sprintf("%v.bin", f.platform)
    var check play.Checkin
    play.Phone.Set(f.platform)
    if err := check.Checkin(play.Phone); err != nil {
@@ -94,6 +96,7 @@ func (f flags) client(a *play.Access_Token, c *play.Checkin) error {
       return err
    }
    home += "/google/play/"
+   err = os.MkdirAll(home, os.ModePerm)
    var token play.Refresh_Token
    token.Raw, err = os.ReadFile(home + "token.txt")
    if err != nil {
