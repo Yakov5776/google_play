@@ -13,6 +13,26 @@ import (
    option "154.pages.dev/http"
 )
 
+func (f flags) is_token_empty() (bool, error) {
+   home, err := os.UserHomeDir()
+   if err != nil {
+      return true, err
+   }
+   home += "/google/play/"
+   var token play.Refresh_Token
+   token.Raw, err = os.ReadFile(home + "token.txt")
+   if err != nil {
+      return true, err
+   }
+   if err := token.Unmarshal(); err != nil {
+      return true, err
+   }
+   if token.Values.Get("Token") == "" {
+      return true, nil
+   }
+   return false, nil
+}
+
 func (f flags) do_device() error {
    home, err := os.UserHomeDir()
    if err != nil {
@@ -33,6 +53,10 @@ func (f flags) do_device() error {
    time.Sleep(9*time.Second)
    if err := check.Unmarshal(); err != nil {
       return err
+   }
+   notoken, err := f.is_token_empty()
+   if notoken {
+      return nil
    }
    return check.Sync(play.Phone)
 }
@@ -168,7 +192,7 @@ func (f flags) do_delivery() error {
                   if err != nil {
                      return err
                   }
-               } 
+               }
             }
          }
       }
