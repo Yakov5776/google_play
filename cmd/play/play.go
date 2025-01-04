@@ -153,11 +153,13 @@ func (f flags) do_auth() error {
    if err != nil {
       return err
    }
+   home += "/google/play/"
+   err = os.MkdirAll(home, os.ModePerm)
    token, err := play.Exchange(f.code)
    if err != nil {
       return err
    }
-   return os.WriteFile(home + "/google/play/token.txt", token.Raw, 0666)
+   return os.WriteFile(home + "token.txt", token.Raw, 0666)
 }
 
 func (f flags) do_delivery() error {
