@@ -216,7 +216,8 @@ func (f flags) do_details() (*play.Details, error) {
    if err != nil {
       return nil, err
    }
-   if err := client.Details(f.app.ID, f.single); err != nil {
+   client.App = f.app
+   if err := client.Details(f.single); err != nil {
       return nil, err
    }
    return &client, nil

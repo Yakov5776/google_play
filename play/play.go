@@ -130,6 +130,11 @@ func x_dfe_device_id(r *http.Request, c Checkin) error {
    return nil
 }
 
+func x_dfe_userlanguages(r *http.Request, langs string) error {
+   r.Header.Set("X-DFE-UserLanguages", langs)
+   return nil
+}
+
 func x_ps_rh(r *http.Request, c Checkin) error {
    id, err := c.Device_ID()
    if err != nil {
@@ -166,6 +171,7 @@ func x_ps_rh(r *http.Request, c Checkin) error {
 type Application struct {
    ID string
    Version uint64
+   Languages string
 }
 
 func (a Application) APK(config string) string {

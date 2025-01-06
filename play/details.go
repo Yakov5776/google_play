@@ -10,21 +10,25 @@ import (
 )
 
 type Details struct {
+   App Application
    Checkin Checkin
    Token Access_Token
    m protobuf.Message
 }
 
-func (d *Details) Details(app string, single bool) error {
+func (d *Details) Details(single bool) error {
    req, err := http.NewRequest("GET", "https://android.clients.google.com", nil)
    if err != nil {
       return err
    }
    req.URL.Path = "/fdfe/details"
-   req.URL.RawQuery = "doc=" + app
+   req.URL.RawQuery = "doc=" + d.App.ID
    authorization(req, d.Token)
    user_agent(req, single)
    if err := x_dfe_device_id(req, d.Checkin); err != nil {
+      return err
+   }
+   if err := x_dfe_userlanguages(req, d.App.Languages); err != nil {
       return err
    }
    res, err := http.DefaultClient.Do(req)

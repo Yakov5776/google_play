@@ -65,6 +65,9 @@ func (d *Delivery) Delivery(single bool) error {
    if err := x_dfe_device_id(req, d.Checkin); err != nil {
       return err
    }
+   if err := x_dfe_userlanguages(req, d.App.Languages); err != nil {
+      return err
+   }
    res, err := http.DefaultClient.Do(req)
    if err != nil {
       return err
