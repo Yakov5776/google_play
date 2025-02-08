@@ -1,0 +1,12 @@
+{
+  "args": {},
+  "headers": {
+    "x-forwarded-proto": "http",
+    "x-forwarded-port": "80",
+    "host": "postman-echo.com",
+    "x-amzn-trace-id": "Root=1-6531f036-1878fe0e7e7ba84b6d3ec4b0",
+    "user-agent": "curl/7.84.0",
+    "accept": "*/*"
+  },
+  "url": "http://postman-echo.com/get"
+}
