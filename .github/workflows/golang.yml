@@ -39,7 +39,7 @@ jobs:
 
       # upload to "actions" tab artifacts (can only make a single .zip from a dir's files)
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: play
           path: ${{github.workspace}}\cmd\play\play.exe
