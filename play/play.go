@@ -16,7 +16,7 @@ const (
    // developer.android.com/guide/topics/manifest/uses-feature-element#glEsVersion
    // the device actually uses 0x30000, but some apps require a higher version,
    // so we need to lie:
-   gl_es_version = 0x30001
+   gl_es_version = 0x30002
 )
 
 var Phone = Device{
