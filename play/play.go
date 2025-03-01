@@ -40,6 +40,8 @@ var Phone = Device{
       "org.apache.http.legacy",
       // com.binance.dev
       "android.test.runner",
+      // com.mojang.minecraftpe
+      "xperiaplaycertified",
    },
    Feature: []string{
       // app.source.getcontact
