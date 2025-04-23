@@ -173,17 +173,20 @@ func (f flags) do_delivery() error {
       return err
    }
    option.Location()
-   for _, apk := range client.Config_APKs() {
-      if url, ok := apk.URL(); ok {
-         if config, ok := apk.Config(); ok {
-            if sig, ok := apk.Signature(); ok {
-               err := f.download(url, f.app.APK(config), sig)
-               if err != nil {
-                  return err
+   if f.justConfig {
+      for _, apk := range client.Config_APKs() {
+         if url, ok := apk.URL(); ok {
+            if config, ok := apk.Config(); ok {
+               if sig, ok := apk.Signature(); ok {
+                  err := f.download(url, f.app.APK(config), sig)
+                  if err != nil {
+                     return err
+                  }
                }
             }
          }
       }
+      return nil
    }
    for _, obb := range client.OBB_Files() {
       if url, ok := obb.URL(); ok {
