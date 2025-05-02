@@ -7,6 +7,8 @@ import (
    "fmt"
    "io"
    "net/http"
+   "net/url"
+   "strconv"
 )
 
 type Details struct {
@@ -22,7 +24,13 @@ func (d *Details) Details(single bool) error {
       return err
    }
    req.URL.Path = "/fdfe/details"
-   req.URL.RawQuery = "doc=" + d.App.ID
+   query := url.Values{
+      "doc": {d.App.ID},
+   }
+   if d.App.Version > 0 {
+      query.Set("vc", strconv.FormatUint(d.App.Version, 10))
+   }
+   req.URL.RawQuery = query.Encode()
    authorization(req, d.Token)
    user_agent(req, single)
    if err := x_dfe_device_id(req, d.Checkin); err != nil {

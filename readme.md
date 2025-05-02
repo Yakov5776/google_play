@@ -15,7 +15,7 @@ play -o oauth2_4/0Adeu5B...
 Now create a file containing `X-DFE-Device-ID` (GSF ID):
 
 ~~~
-play -d -p 2
+play -c -p 2
 ~~~
 
 2 in this example is platform number. You need to run this command once for each platform you intend to use. Different apps or different app versions may be available for different devices.

@@ -14,6 +14,7 @@ type flags struct {
    code string
    device bool
    single bool
+   details bool
    platform play.Platform
    just string
 }
@@ -22,7 +23,7 @@ func main() {
    var f flags
    flag.StringVar(&f.app.ID, "a", "", "application ID")
    flag.BoolVar(&f.acquire, "acquire", false, "acquire application")
-   flag.BoolVar(&f.device, "d", false, "checkin and sync device")
+   flag.BoolVar(&f.device, "c", false, "checkin and sync device")
    flag.StringVar(&f.code, "o", "", func() string {
       var b strings.Builder
       b.WriteString("oauth_token from ")
@@ -31,6 +32,7 @@ func main() {
    }())
    flag.BoolVar(&f.single, "s", false, "single APK")
    flag.Uint64Var(&f.app.Version, "v", 0, "version code")
+   flag.BoolVar(&f.details, "d", false, "query details")
    flag.Var(&f.platform, "p", fmt.Sprint(play.Platforms))
    flag.StringVar(&f.app.Languages, "l", "en-US,fr-FR,de-DE,it-IT,es-ES", "languages to download, comma separated")
    flag.StringVar(&f.just, "just", "all", "download a specific file (apk, config, obb, or all)")
@@ -45,7 +47,7 @@ func main() {
          if err != nil {
             panic(err)
          }
-      case f.app.Version >= 1:
+      case f.app.Version >= 1 && !f.details:
          err := f.do_delivery()
          if err != nil {
             panic(err)
