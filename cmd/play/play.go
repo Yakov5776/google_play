@@ -173,7 +173,11 @@ func (f flags) do_delivery() error {
       return err
    }
    option.Location()
-   if f.justConfig {
+
+   just := f.just
+
+   // APK (includes base APK)
+   if just == "apk" || just == "all" {
       for _, apk := range client.Config_APKs() {
          if url, ok := apk.URL(); ok {
             if config, ok := apk.Config(); ok {
@@ -186,14 +190,41 @@ func (f flags) do_delivery() error {
             }
          }
       }
-      return nil
+      if url, ok := client.URL(); ok {
+         if sig, ok := client.Signature(); ok {
+            err := f.download(url, f.app.APK(""), sig)
+            if err != nil {
+               return err
+            }
+         }
+      }
    }
-   for _, obb := range client.OBB_Files() {
-      if url, ok := obb.URL(); ok {
-         if role, ok := obb.Role(); ok {
-            if vc, ok := obb.Version_Code(); ok {
-               if sig, ok := obb.Signature(); ok {
-                  err := f.download(url, f.app.OBB(role, vc), sig)
+
+   // OBB
+   if just == "obb" || just == "all" {
+      for _, obb := range client.OBB_Files() {
+         if url, ok := obb.URL(); ok {
+            if role, ok := obb.Role(); ok {
+               if vc, ok := obb.Version_Code(); ok {
+                  if sig, ok := obb.Signature(); ok {
+                     err := f.download(url, f.app.OBB(role, vc), sig)
+                     if err != nil {
+                        return err
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   // Config APKs only
+   if just == "config" || just == "all" {
+      for _, apk := range client.Config_APKs() {
+         if url, ok := apk.URL(); ok {
+            if config, ok := apk.Config(); ok {
+               if sig, ok := apk.Signature(); ok {
+                  err := f.download(url, f.app.APK(config), sig)
                   if err != nil {
                      return err
                   }
@@ -202,14 +233,7 @@ func (f flags) do_delivery() error {
          }
       }
    }
-   if url, ok := client.URL(); ok {
-      if sig, ok := client.Signature(); ok {
-         err := f.download(url, f.app.APK(""), sig)
-         if err != nil {
-            return err
-         }
-      }
-   }
+
    return nil
 }
 

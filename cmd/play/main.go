@@ -15,7 +15,7 @@ type flags struct {
    device bool
    single bool
    platform play.Platform
-   justConfig bool // New flag to indicate downloading just the configuration
+   just string
 }
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
    flag.Uint64Var(&f.app.Version, "v", 0, "version code")
    flag.Var(&f.platform, "p", fmt.Sprint(play.Platforms))
    flag.StringVar(&f.app.Languages, "l", "en-US,fr-FR,de-DE,it-IT,es-ES", "languages to download, comma separated")
-   flag.BoolVar(&f.justConfig, "justConfig", false, "download just the configuration (for split bundles only)")
+   flag.StringVar(&f.just, "just", "all", "download a specific file (apk, config, obb, or all)")
    flag.Parse()
    http.No_Location()
    http.Verbose()
