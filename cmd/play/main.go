@@ -10,6 +10,7 @@ import (
 
 type flags struct {
    acquire bool
+   delivery bool
    app play.Application
    code string
    device bool
@@ -21,6 +22,7 @@ func main() {
    var f flags
    flag.StringVar(&f.app.ID, "a", "", "application ID")
    flag.BoolVar(&f.acquire, "acquire", false, "acquire application")
+   flag.BoolVar(&f.delivery, "download", false, "download application")
    flag.BoolVar(&f.device, "d", false, "checkin and sync device")
    flag.StringVar(&f.code, "o", "", func() string {
       var b strings.Builder
@@ -44,9 +46,17 @@ func main() {
             panic(err)
          }
       case f.app.Version >= 1:
-         err := f.do_delivery()
-         if err != nil {
-            panic(err)
+         if f.delivery {
+            err := f.do_delivery()
+            if err != nil {
+               panic(err)
+            }
+         } else {
+            details, err := f.do_details()
+            if err != nil {
+               panic(err)
+            }
+            fmt.Println(details)
          }
       default:
          details, err := f.do_details()

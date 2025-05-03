@@ -61,5 +61,5 @@ play -a com.google.android.youtube -p 2 -acquire
 Download APK. You need to specify any valid version code. The latest code is provided by the previous details command. If APK is split, all pieces will be downloaded:
 
 ~~~
-play -a com.google.android.youtube -p 2 -v 1540222400
+play -a com.google.android.youtube -p 2 -v 1540222400 -download
 ~~~
