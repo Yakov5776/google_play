@@ -11,7 +11,7 @@ import (
 )
 
 const (
-   android_API = 30
+   android_API = 33
    google_play_store = 82941300
    // developer.android.com/guide/topics/manifest/uses-feature-element#glEsVersion
    // the device actually uses 0x30000, but some apps require a higher version,
