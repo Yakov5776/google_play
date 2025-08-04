@@ -175,6 +175,10 @@ func (d Details) String() string {
    if v, ok := d.Version_Name(); ok {
       b = fmt.Append(b, " ", v)
    }
+   b = append(b, "\nwhats new:"...)
+   if v, ok := d.Whats_New(); ok {
+      b = fmt.Append(b, " ", v)
+   }
    return string(b)
 }
 
@@ -197,4 +201,10 @@ func (d Details) Version_Name() (string, bool) {
    d.m.Message(13)
    d.m.Message(1)
    return d.m.String(4)
+}
+
+func (d Details) Whats_New() (string, bool) {
+   d.m.Message(13)
+   d.m.Message(1)
+   return d.m.String(15)
 }
