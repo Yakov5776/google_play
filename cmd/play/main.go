@@ -22,6 +22,7 @@ func main() {
    var f flags
    flag.StringVar(&f.app.ID, "a", "", "application ID")
    flag.BoolVar(&f.acquire, "acquire", false, "acquire application")
+   flag.StringVar(&f.app.AssetModule, "asset", "", "download application asset module")
    flag.BoolVar(&f.delivery, "download", false, "download application")
    flag.BoolVar(&f.device, "d", false, "checkin and sync device")
    flag.StringVar(&f.code, "o", "", func() string {
@@ -48,6 +49,11 @@ func main() {
       case f.app.Version >= 1:
          if f.delivery {
             err := f.do_delivery()
+            if err != nil {
+               panic(err)
+            }
+         } else if f.app.AssetModule != "" {
+            err := f.do_asset_delivery()
             if err != nil {
                panic(err)
             }

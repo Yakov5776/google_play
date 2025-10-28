@@ -174,6 +174,7 @@ type Application struct {
    ID string
    Version uint64
    Languages string
+   AssetModule string
 }
 
 func (a Application) APK(config string) string {
