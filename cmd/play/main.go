@@ -57,6 +57,7 @@ func main() {
             err := f.do_asset_delivery()
             if err != nil {
                panic(err)
+            }
          }
       default:
          details, err := f.do_details()
