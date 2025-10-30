@@ -2,6 +2,7 @@ package main
 
 import (
    "154.pages.dev/google/play"
+   "errors"
    "fmt"
    "net/http"
    "os"
@@ -10,6 +11,7 @@ import (
    "reflect"
    "encoding/base64"
    "crypto/sha1"
+   "crypto/sha256"
    option "154.pages.dev/http"
 )
 
@@ -84,18 +86,51 @@ func (f flags) check_file_sha1(name string, control_hash []byte) (bool, error) {
    return true, nil
 }
 
+func (f flags) check_file_sha256(name string, control_hash []byte) (bool, error) {
+   _, err := os.Stat(name)
+   if err != nil {
+      return false, nil
+   }
+   file, err := os.Open(name)
+   if err != nil {
+      return false, err
+   }
+   defer file.Close()
+   fmt.Printf("File %s exists, verifying...\n", name)
+   hash := sha256.New()
+   if _, err := io.Copy(hash, file); err != nil {
+      return false, err
+   }
+   if !reflect.DeepEqual(hash.Sum(nil), control_hash) {
+      fmt.Printf("  SHA-256 mismatch, redownloading...\n")
+      return false, nil
+   }
+   fmt.Printf("  SHA-256 OK\n")
+   return true, nil
+}
+
 func (f flags) download(url, name string, sig string) error {
    h, err := base64.RawURLEncoding.DecodeString(sig)
    if err != nil {
       return err
    }
    //fmt.Printf("SHA-1: %x\n", h)
-   matches, err := f.check_file_sha1(name, h)
-   if err != nil {
-      return err
-   }
-   if matches {
-      return nil
+   if len(h) == 32 {
+      matches, err := f.check_file_sha256(name, h)
+      if err != nil {
+         return err
+      }
+      if matches {
+         return nil
+      }
+   } else {
+      matches, err := f.check_file_sha1(name, h)
+      if err != nil {
+         return err
+      }
+      if matches {
+         return nil
+      }
    }
    res, err := http.Get(url)
    if err != nil {
@@ -234,6 +269,37 @@ func (f flags) do_delivery() error {
       }
    }
 
+   return nil
+}
+
+func (f flags) do_asset_delivery() error {
+   var client play.AssetDelivery
+   err := f.client(&client.Token, &client.Checkin)
+   if err != nil {
+      return err
+   }
+   client.App = f.app
+   if err := client.AssetDelivery(f.single); err != nil {
+      return err
+   }
+   option.Location()
+   if name, ok := client.Asset_Name(); ok {
+      fmt.Printf("%s\n", name)
+      parts := client.Parts()
+      if len(parts) > 1 {
+         return errors.New("More than 1 asset module URL returned!\n")
+      }
+      for _, part := range parts {
+         if url, ok := part.URL(); ok {
+            if sig, ok := part.Signature(); ok {
+               err := f.download(url, f.app.APK(name), sig)
+               if err != nil {
+                  return err
+               }
+            }
+         }
+      }
+   }
    return nil
 }
 
