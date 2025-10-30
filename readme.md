@@ -63,3 +63,9 @@ Download APK. You need to specify any valid version code. The latest code is pro
 ~~~
 play -a com.google.android.youtube -p 2 -v 1540222400
 ~~~
+
+Some apps use on-demand asset packs which are downloaded separately after the initial installation. Unfortunately, the tool has no way of knowing the names of these asset packs so they cannot be downloaded automatically. You will have to figure them out by examining the app's code. Once you do have an asset pack name, you can install it like this:
+
+~~~
+play -a com.gameloft.android.ANMP.GloftA8HM -p 2 -v 86010 -asset music_pack
+~~~

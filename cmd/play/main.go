@@ -23,6 +23,7 @@ func main() {
    var f flags
    flag.StringVar(&f.app.ID, "a", "", "application ID")
    flag.BoolVar(&f.acquire, "acquire", false, "acquire application")
+   flag.StringVar(&f.app.AssetModule, "asset", "", "download application asset module")
    flag.BoolVar(&f.device, "c", false, "checkin and sync device")
    flag.StringVar(&f.code, "o", "", func() string {
       var b strings.Builder
@@ -51,6 +52,11 @@ func main() {
          err := f.do_delivery()
          if err != nil {
             panic(err)
+         }
+         if f.app.AssetModule != "" {
+            err := f.do_asset_delivery()
+            if err != nil {
+               panic(err)
          }
       default:
          details, err := f.do_details()
