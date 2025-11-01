@@ -17,6 +17,7 @@ type flags struct {
    details bool
    platform play.Platform
    just string
+   bulkdetails bool
 }
 
 func main() {
@@ -24,6 +25,7 @@ func main() {
    flag.StringVar(&f.app.ID, "a", "", "application ID")
    flag.BoolVar(&f.acquire, "acquire", false, "acquire application")
    flag.StringVar(&f.app.AssetModule, "asset", "", "download application asset module")
+   flag.BoolVar(&f.bulkdetails, "bulkdetails", false, "fetch application details using /fdfe/bulkDetails request")
    flag.BoolVar(&f.device, "c", false, "checkin and sync device")
    flag.StringVar(&f.code, "o", "", func() string {
       var b strings.Builder

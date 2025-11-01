@@ -15,7 +15,7 @@ type AssetDelivery struct {
    m protobuf.Message
 }
 
-func (d *AssetDelivery) AssetDelivery(single bool) error {
+func (d *AssetDelivery) AssetDelivery() error {
    var m protobuf.Message
    m.Add_String(1, d.App.ID)
    m.Add(2, func(m *protobuf.Message) {
@@ -42,7 +42,7 @@ func (d *AssetDelivery) AssetDelivery(single bool) error {
    req.URL.Path = "/fdfe/assetModuleDelivery"
    req.Header.Set("Content-Type", "application/x-protobuf")
    authorization(req, d.Token)
-   user_agent(req, single)
+   user_agent(req, false)
    if err := x_dfe_device_id(req, d.Checkin); err != nil {
       return err
    }
