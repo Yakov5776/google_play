@@ -252,7 +252,7 @@ func (f flags) do_asset_delivery() error {
       return err
    }
    client.App = f.app
-   if err := client.AssetDelivery(f.single); err != nil {
+   if err := client.AssetDelivery(); err != nil {
       return err
    }
    option.Location()
