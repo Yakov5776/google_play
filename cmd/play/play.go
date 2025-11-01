@@ -283,8 +283,14 @@ func (f flags) do_details() (*play.Details, error) {
       return nil, err
    }
    client.App = f.app
-   if err := client.Details(f.single); err != nil {
-      return nil, err
+   if f.bulkdetails {
+      if err := client.BulkDetails(f.single); err != nil {
+         return nil, err
+      }
+   } else {
+      if err := client.Details(f.single); err != nil {
+         return nil, err
+      }
    }
    return &client, nil
 }

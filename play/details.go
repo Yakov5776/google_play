@@ -3,6 +3,7 @@ package play
 import (
    "154.pages.dev/encoding"
    "154.pages.dev/protobuf"
+   "bytes"
    "errors"
    "fmt"
    "io"
@@ -60,6 +61,59 @@ func (d *Details) Details(single bool) error {
    d.m.Message(1)
    d.m.Message(2)
    d.m.Message(4)
+   return nil
+}
+
+func (d *Details) BulkDetails(single bool) error {
+   var m protobuf.Message
+   m.Add(8, func(m *protobuf.Message) {
+      m.Add_String(1, d.App.ID)
+      m.Add_Varint(2, d.App.Version)
+      m.Add_String(7, "")
+   })
+   req, err := http.NewRequest(
+      "POST",
+      "https://android.clients.google.com",
+      bytes.NewReader(m.Append(nil)),
+   )
+   if err != nil {
+      return err
+   }
+   req.URL.Path = "/fdfe/bulkDetails"
+   req.Header.Set("Content-Type", "application/x-protobuf")
+   authorization(req, d.Token)
+   user_agent(req, single)
+   if err := x_dfe_device_id(req, d.Checkin); err != nil {
+      return err
+   }
+   if err := x_dfe_userlanguages(req, d.App.Languages); err != nil {
+      return err
+   }
+   res, err := http.DefaultClient.Do(req)
+   if err != nil {
+      return err
+   }
+   defer res.Body.Close()
+   if res.StatusCode != http.StatusOK {
+      return errors.New(res.Status)
+   }
+   d.m, err = func() (protobuf.Message, error) {
+      b, err := io.ReadAll(res.Body)
+      if err != nil {
+         return nil, err
+      }
+      return protobuf.Consume(b)
+   }()
+   if err != nil {
+      return err
+   }
+   d.m.Message(1)
+   d.m.Message(19)
+   ok := d.m.Message(1)
+   if !ok {
+      return errors.New("empty response returned")
+   }
+   d.m.Message(1)
    return nil
 }
 
