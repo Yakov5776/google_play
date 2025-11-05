@@ -109,8 +109,7 @@ func (d *Details) BulkDetails(single bool) error {
    }
    d.m.Message(1)
    d.m.Message(19)
-   ok := d.m.Message(1)
-   if !ok {
+   if ok := d.m.Message(1); !ok {
       return errors.New("empty response returned")
    }
    d.m.Message(1)
@@ -169,9 +168,11 @@ func (d Details) Price_Currency() (string, bool) {
 func (d Details) Requires() (string, bool) {
    d.m.Message(13)
    d.m.Message(1)
-   d.m.Message(82)
-   d.m.Message(1)
-   return d.m.String(1)
+   if ok := d.m.Message(82); ok {
+      d.m.Message(1)
+      return d.m.String(1)
+   }
+   return "", false
 }
 
 func (d Details) Size() (uint64, bool) {
@@ -233,6 +234,10 @@ func (d Details) String() string {
    if v, ok := d.Whats_New(); ok {
       b = fmt.Append(b, " ", v)
    }
+   b = append(b, "\nreleased on:"...)
+   if v, ok := d.Released_On(); ok {
+      b = fmt.Append(b, " ", v)
+   }
    return string(b)
 }
 
@@ -261,4 +266,13 @@ func (d Details) Whats_New() (string, bool) {
    d.m.Message(13)
    d.m.Message(1)
    return d.m.String(15)
+}
+
+func (d Details) Released_On() (string, bool) {
+   d.m.Message(13)
+   d.m.Message(1)
+   if ok := d.m.Message(64); ok {
+      return d.m.String(1)
+   }
+   return "", false
 }
