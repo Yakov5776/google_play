@@ -319,7 +319,7 @@ var Presets = map[int]Preset{
    },
    // mips
    10: {
-      ABIs: []string{"mips"},
+      ABIs: []string{"mips","arm64-v8a","armeabi-v7a","armeabi"},
       Width: 720,
       Height: 1280,
       Density: 320,
@@ -327,7 +327,7 @@ var Presets = map[int]Preset{
    },
    // mips64
    11: {
-      ABIs: []string{"mips64","mips"},
+      ABIs: []string{"mips64","mips","arm64-v8a","armeabi-v7a","armeabi"},
       Width: 720,
       Height: 1280,
       Density: 320,
