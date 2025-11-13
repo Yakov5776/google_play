@@ -221,6 +221,9 @@ var Platforms = map[int]string{
    10: "mips",
    11: "mips64",
    12: "riscv64",
+   20: "armeabi-v7a-qvga",
+   21: "armeabi-v7a-hvga",
+   22: "armeabi-v7a-wvga",
 }
 
 func (p Platform) String() string {
@@ -243,7 +246,7 @@ var Presets = map[int]Preset{
       Width: 320,
       Height: 480,
       Density: 160,
-      ScreenSize: 1,
+      ScreenSize: 2,
    },
    // armeabi-v7a
    1: {
@@ -339,6 +342,30 @@ var Presets = map[int]Preset{
       Width: 720,
       Height: 1280,
       Density: 320,
+      ScreenSize: 2,
+   },
+   // armeabi-v7a-qvga
+   20: {
+      ABIs: []string{"armeabi-v7a","armeabi"},
+      Width: 240,
+      Height: 320,
+      Density: 160,
+      ScreenSize: 1,
+   },
+   // armeabi-v7a-hvga
+   21: {
+      ABIs: []string{"armeabi-v7a","armeabi"},
+      Width: 320,
+      Height: 480,
+      Density: 160,
+      ScreenSize: 2,
+   },
+   // armeabi-v7a-wvga
+   22: {
+      ABIs: []string{"armeabi-v7a","armeabi"},
+      Width: 480,
+      Height: 800,
+      Density: 240,
       ScreenSize: 2,
    },
 }
