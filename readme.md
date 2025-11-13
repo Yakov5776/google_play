@@ -41,6 +41,9 @@ Valid platforms are:
 - 10 - MIPS device
 - 11 - MIPS 64-bit device
 - 12 - RISC-V 64-bit device
+- 20 - ARMv7 QVGA phone (240x320 160dpi)
+- 21 - ARMv7 HVGA phone (320x480 160dpi)
+- 22 - ARMv7 WVGA phone (480x800 240dpi)
 
 Get app details:
 
