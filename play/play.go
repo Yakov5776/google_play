@@ -349,7 +349,7 @@ var Presets = map[int]Preset{
       ABIs: []string{"armeabi-v7a","armeabi"},
       Width: 240,
       Height: 320,
-      Density: 160,
+      Density: 120,
       ScreenSize: 1,
    },
    // armeabi-v7a-hvga
