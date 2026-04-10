@@ -14,7 +14,11 @@ type flags struct {
    code string
    device bool
    single bool
+<<<<<<< HEAD
    details bool
+=======
+   skipssl bool
+>>>>>>> upstream/main
    platform play.Platform
    just string
    bulkdetails bool
@@ -34,6 +38,7 @@ func main() {
       return b.String()
    }())
    flag.BoolVar(&f.single, "s", false, "single APK")
+   flag.BoolVar(&f.skipssl, "sv", false, "skip SSL certificate verification for proxying")
    flag.Uint64Var(&f.app.Version, "v", 0, "version code")
    flag.BoolVar(&f.details, "d", false, "query details")
    flag.Var(&f.platform, "p", fmt.Sprint(play.Platforms))
@@ -42,6 +47,9 @@ func main() {
    flag.Parse()
    http.No_Location()
    http.Verbose()
+   if f.skipssl {
+      http.SkipSSL()
+   }
    switch {
    case f.app.ID != "":
       switch {
@@ -50,12 +58,15 @@ func main() {
          if err != nil {
             panic(err)
          }
+<<<<<<< HEAD
       case f.app.Version >= 1 && !f.details:
          err := f.do_delivery()
          if err != nil {
             panic(err)
          }
          if f.app.AssetModule != "" {
+=======
+>>>>>>> upstream/main
             err := f.do_asset_delivery()
             if err != nil {
                panic(err)

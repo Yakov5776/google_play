@@ -230,10 +230,13 @@ func (d Details) String() string {
    if v, ok := d.Version_Name(); ok {
       b = fmt.Append(b, " ", v)
    }
+<<<<<<< HEAD
    b = append(b, "\nwhats new:"...)
    if v, ok := d.Whats_New(); ok {
       b = fmt.Append(b, " ", v)
    }
+=======
+>>>>>>> upstream/main
    b = append(b, "\nreleased on:"...)
    if v, ok := d.Released_On(); ok {
       b = fmt.Append(b, " ", v)

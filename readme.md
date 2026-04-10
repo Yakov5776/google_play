@@ -2,6 +2,7 @@
 
 Download APK from Google Play or send API requests.
 
+<<<<<<< HEAD
 This is an active fork of [NicknineTheEagle/google](https://github.com/NicknineTheEagle/google) with some added functionality and changes, including:
 - `-just` argument used to download just a specific file (apk, config, obb, or all)
 - what's new is included in app details
@@ -9,6 +10,8 @@ This is an active fork of [NicknineTheEagle/google](https://github.com/NicknineT
 - details for a specific version can be queried via `-d` 
 
 ## tool examples
+=======
+>>>>>>> upstream/main
 
 Go [here](//accounts.google.com/embedded/setup/v2/android) in incognito mode and sign in with your Google Account. Then get authorization code (`oauth_token`) cookie from [browser&nbsp;storage][1]. It should be valid for 10 minutes. Then exchange authorization code for refresh token (`aas_et`):
 
@@ -41,7 +44,7 @@ Valid platforms are:
 - 10 - MIPS device
 - 11 - MIPS 64-bit device
 - 12 - RISC-V 64-bit device
-- 20 - ARMv7 QVGA phone (240x320 160dpi)
+- 20 - ARMv7 QVGA phone (240x320 120dpi)
 - 21 - ARMv7 HVGA phone (320x480 160dpi)
 - 22 - ARMv7 WVGA phone (480x800 240dpi)
 
