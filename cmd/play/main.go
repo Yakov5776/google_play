@@ -14,11 +14,8 @@ type flags struct {
    code string
    device bool
    single bool
-<<<<<<< HEAD
    details bool
-=======
    skipssl bool
->>>>>>> upstream/main
    platform play.Platform
    just string
    bulkdetails bool
@@ -58,15 +55,12 @@ func main() {
          if err != nil {
             panic(err)
          }
-<<<<<<< HEAD
       case f.app.Version >= 1 && !f.details:
          err := f.do_delivery()
          if err != nil {
             panic(err)
          }
          if f.app.AssetModule != "" {
-=======
->>>>>>> upstream/main
             err := f.do_asset_delivery()
             if err != nil {
                panic(err)
