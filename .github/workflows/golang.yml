@@ -29,12 +29,19 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.21'
+          go-version-file: go.mod
+
+      - name: Download dependencies
+        run: go mod download
+        env:
+          GOFLAGS: -mod=mod
 
       # Runs commands using the runners shell
       - name: Build
         run: go build
         working-directory: cmd/play
+        env:
+          GOFLAGS: -mod=mod
 
       # upload to "actions" tab artifacts (can only make a single .zip from a dir's files)
       - name: Upload Windows artifact

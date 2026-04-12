@@ -9,3 +9,7 @@ require (
 )
 
 require google.golang.org/protobuf v1.31.0 // indirect
+
+replace 154.pages.dev/encoding => ./third_party/encoding
+replace 154.pages.dev/http => ./third_party/http
+replace 154.pages.dev/protobuf => ./third_party/protobuf
